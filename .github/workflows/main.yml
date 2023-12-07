@@ -1,4 +1,4 @@
-name: CI frontend
+name: CI-CD frontend
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2.4.4  # Spécifiez une version qui prend en charge Node.js 16.
+      uses: actions/checkout@v2  # Utilisez la dernière version de l'action.
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -32,10 +32,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2.4.4  # Spécifiez la même version que dans la première étape.
+      uses: actions/checkout@v2  # Utilisez la même version que dans la première étape.
 
     - name: Docker Setup
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend-ci:latest .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend-ci:latest.
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend-ci:latest
