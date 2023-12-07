@@ -1,4 +1,4 @@
-name: CI-CD frontend
+name: CI frontend
 
 on:
   push:
@@ -36,6 +36,6 @@ jobs:
 
     - name: Docker Setup
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend-ci:latest.
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend_ci:latest.
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/frontend-ci:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/frontend_ci:latest
