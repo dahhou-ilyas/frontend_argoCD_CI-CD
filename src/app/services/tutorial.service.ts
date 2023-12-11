@@ -5,7 +5,7 @@ import { Tutorial } from '../models/tutorial.model';
 
 const baseUrl = 'http://backend-api.com/api/tutorials';
 
-console.log("test rulds");
+console.log("test ruls");
 
 @Injectable({
   providedIn: 'root',
