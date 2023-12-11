@@ -1,0 +1,49 @@
+name: CI frontend
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/master' &&
+      (
+        contains(github.event.head_commit.modified, 'package.json') ||
+        contains(github.event.head_commit.modified, 'Dockerfile') ||
+        contains(github.event.head_commit.modified, 'src/')
+      )
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2  # Utilisez la dernière version de l'action.
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: |
+        npm install
+
+    - name: Build Angular app
+      run: |
+        npm run build
+
+  package:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2  # Utilisez la même version que dans la première étape.
+
+    - name: Docker Setup
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend_ci:latest .
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/frontend_ci:latest
