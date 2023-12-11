@@ -14,7 +14,7 @@ jobs:
       (
         contains(github.event.head_commit.modified, 'package.json') ||
         contains(github.event.head_commit.modified, 'Dockerfile') ||
-        contains(github.event.head_commit.modified, 'src/')
+        contains(github.event.head_commit.modified, 'src/**')
       )
 
     steps:
