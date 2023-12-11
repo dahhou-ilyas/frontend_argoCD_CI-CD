@@ -11,8 +11,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - name: Debug Modified Files
-      run: echo "Modified files lll ${{ github.event.head_commit.modified }}"
+    - name: Debug Event Details
+      run: echo "Event details--> ${{ toJson(github.event) }}"
 
   build:
     runs-on: ubuntu-latest
