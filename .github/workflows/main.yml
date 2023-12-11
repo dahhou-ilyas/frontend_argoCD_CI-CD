@@ -8,6 +8,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/master' &&
+      (
+        contains(github.event.head_commit.modified, 'package.json') ||
+        contains(github.event.head_commit.modified, 'Dockerfile') ||
+        contains(github.event.head_commit.modified, 'src/')
+      )
 
     steps:
     - name: Checkout repository
