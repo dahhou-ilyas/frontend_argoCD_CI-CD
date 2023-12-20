@@ -4,7 +4,7 @@ FROM nginx:1.25.3-alpine
 WORKDIR /usr/share/nginx/html
 
 # Copie les fichiers depuis le répertoire source
-COPY src/angular-16-crud .
+COPY angular.json .
 
 # Expose le port 80
 EXPOSE 80
