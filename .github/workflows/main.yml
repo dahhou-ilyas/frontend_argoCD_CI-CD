@@ -54,7 +54,7 @@ jobs:
         run: |
           echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
           echo $GITHUB_SHA_SHORT
-          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${{ env.GITHUB_SHA_SHORT }}"
+          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${GITHUB_SHA_SHORT}"
           echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
       
       - name: Docker Setup
