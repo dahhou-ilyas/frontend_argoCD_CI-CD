@@ -60,7 +60,6 @@ jobs:
       - name: Docker Setup
         run: |
           package_number=${PACKAGE_NUMBER}
-
           image_tag="${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${package_number}"
     
           docker build -t $image_tag .
