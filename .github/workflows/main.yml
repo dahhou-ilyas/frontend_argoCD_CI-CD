@@ -51,7 +51,7 @@ jobs:
           path: dist
       
       - name: Docker Setup
-        run: echo "${{ github.ref_name }}"
+        run: echo "${{ github }}"
 
       - name: Docker Setup
         run: |
