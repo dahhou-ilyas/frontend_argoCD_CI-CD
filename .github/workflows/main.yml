@@ -39,15 +39,7 @@ jobs:
   package:
     needs: build
     runs-on: ubuntu-latest
-    outputs:
-      id: PACKAGE
-      set-env: |
-        if [[ -z "${PACKAGE_NUMBER}" ]]; then
-          echo "PACKAGE_NUMBER=1" >> $GITHUB_ENV
-        else
-          echo "PACKAGE_NUMBER=$((PACKAGE_NUMBER + 1))" >> $GITHUB_ENV
-        fi
-        echo "IMAGE_TAG=${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${PACKAGE_NUMBER}" >> $GITHUB_ENV
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -57,14 +49,24 @@ jobs:
         with:
           name: dist
           path: dist
-
+      
+      - name: set variable
+        run: |
+          if [ -z "${PACKAGE_NUMBER}" ]; then
+            PACKAGE_NUMBER=1
+          else
+            PACKAGE_NUMBER=$((PACKAGE_NUMBER + 1))
+          fi
+          echo "PACKAGE_NUMBER=${PACKAGE_NUMBER}" >> $GITHUB_ENV
+          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${PACKAGE_NUMBER}"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
+      
       - name: Docker Setup
         run: |
           image_tag="${IMAGE_TAG}"
           docker build -t $image_tag .
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker push $image_tag
-
 
   deploy:
     needs: package
