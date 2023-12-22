@@ -55,9 +55,9 @@ jobs:
 
       - name: Docker Setup
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend_ci:v2 .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend_ci:${GITHUB_SHA::4} .
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/frontend_ci:v2
+          docker push ${{ secrets.DOCKER_USERNAME }}/frontend_ci:${GITHUB_SHA::4}
 
   deploy:
     needs: package
