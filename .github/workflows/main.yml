@@ -8,14 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      id: BUILD
-      set-env: |
-        if [[ -z "${BUILD_NUMBER}" ]]; then
-          echo "BUILD_NUMBER=1" >> $GITHUB_ENV
-        else
-          echo "BUILD_NUMBER=$((BUILD_NUMBER + 1))" >> $GITHUB_ENV
-        fi
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -48,6 +40,15 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
 
+    outputs:
+      id: PACKAGE
+      set-env: |
+        if [[ -z "${PACKAGE_NUMBER}" ]]; then
+          echo "PACKAGE_NUMBER=1" >> $GITHUB_ENV
+        else
+          echo "PACKAGE_NUMBER=$((PACKAGE_NUMBER + 1))" >> $GITHUB_ENV
+        fi
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -60,7 +61,9 @@ jobs:
 
       - name: Docker Setup
         run: |
-          image_tag="${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${{ needs.package.outputs.BUILD }}"
+          package_number=${{ needs.build.outputs.PACKAGE }}
+
+          image_tag="${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${package_number}"
     
           docker build -t $image_tag .
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
