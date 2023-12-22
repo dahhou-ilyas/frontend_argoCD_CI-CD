@@ -59,12 +59,13 @@ jobs:
 
       - name: Docker Setup
         run: |
-          package_number=${PACKAGE_NUMBER}
+          package_number=$PACKAGE_NUMBER
           image_tag="${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${package_number}"
     
           docker build -t $image_tag .
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker push $image_tag
+          
   deploy:
     needs: package
     runs-on: ubuntu-latest
