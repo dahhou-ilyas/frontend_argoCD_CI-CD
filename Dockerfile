@@ -5,5 +5,5 @@ COPY dist/* /usr/share/nginx/html
 # ezezd
 EXPOSE 80
 
-# Command to start NGINX
+# Command to start NGIN
 CMD ["nginx", "-g", "daemon off;"]
