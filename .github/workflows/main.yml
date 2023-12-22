@@ -48,6 +48,7 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: dist
+          path: dist
 
       - name: Docker Setup
         run: |
