@@ -50,7 +50,7 @@ jobs:
           name: dist
           path: dist
       
-      - name: Docker Setup
+      - name: Docker Setupq
         run: echo "${{ github.sha:0:4 }}"
 
       - name: Docker Setup
