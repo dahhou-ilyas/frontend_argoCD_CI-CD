@@ -33,6 +33,12 @@ jobs:
         run: |
           npm run build
 
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist
+
   package:
     needs: build
     runs-on: ubuntu-latest
@@ -40,6 +46,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
 
       - name: Docker Setup
         run: |
