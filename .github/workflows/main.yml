@@ -55,9 +55,9 @@ jobs:
 
       - name: Docker Setup
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${GITHUB_SHA::4} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend_ci:V-${GITHUB_SHA::4} .
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${GITHUB_SHA::4}
+          docker push ${{ secrets.DOCKER_USERNAME }}/frontend_ci:V-${GITHUB_SHA::4}
 
   deploy:
     needs: package
@@ -66,6 +66,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Test Version
+        run: echo "${GITHUB_SHA::4}"
       - name: Update image version in YAML
         run: |
           commit_sha=$COMMIT_SHA
