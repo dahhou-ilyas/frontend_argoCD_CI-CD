@@ -50,11 +50,6 @@ jobs:
           name: dist
           path: dist
       
-      - name: get Tag
-        id: vars
-        run: |
-          run: echo ::set-output name=tag::${git describe --abbrev=0}
-
       - name: Docker Setup
         run: |
           tag_v=$(git describe --tags $(git rev-list --tags --max-count=1))
