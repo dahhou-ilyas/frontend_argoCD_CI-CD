@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'package.json'
-      - 'Dockerfile'
-      - 'src/**'
 
 jobs:
   build:
@@ -34,6 +30,10 @@ jobs:
           npm run build
           ls -l dist
 
+      - name: Set commit SHA as environment variable
+        run: |
+          echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@master
         with:
@@ -56,8 +56,28 @@ jobs:
 
       - name: Docker Setup
         run: |
-          pwd
-          ls
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend_ci:latest .
+          commit_sha=$COMMIT_SHA
+          image_tag="${{ secrets.DOCKER_USERNAME }}/frontend_ci:${commit_sha}"
+          
+          docker build -t $image_tag .
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/frontend_ci:latest
+          docker push $image_tag
+  deploy:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update image version in YAML
+        run: |
+          commit_sha=$COMMIT_SHA
+          sed -i 's|image: dahhouilyas/frontend_ci:.*|image: ${{ secrets.DOCKER_USERNAME }}/frontend_ci:${commit_sha}|' dev/frontend.yaml
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add dev/frontend.yaml
+          git commit -m "Update image version in Kubernetes YAML [skip ci]"
+          git push
