@@ -39,7 +39,6 @@ jobs:
   package:
     needs: build
     runs-on: ubuntu-latest
-
     outputs:
       id: PACKAGE
       set-env: |
@@ -48,7 +47,6 @@ jobs:
         else
           echo "PACKAGE_NUMBER=$((PACKAGE_NUMBER + 1))" >> $GITHUB_ENV
         fi
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -61,7 +59,7 @@ jobs:
 
       - name: Docker Setup
         run: |
-          package_number=${{ needs.build.outputs.PACKAGE }}
+          package_number=${PACKAGE_NUMBER}
 
           image_tag="${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${package_number}"
     
