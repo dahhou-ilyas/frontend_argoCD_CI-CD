@@ -39,7 +39,7 @@ jobs:
   package:
     needs: build
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -52,13 +52,8 @@ jobs:
       
       - name: set variable
         run: |
-          if [ -z "${PACKAGE_NUMBER}" ]; then
-            PACKAGE_NUMBER=1
-          else
-            PACKAGE_NUMBER=$((PACKAGE_NUMBER + 1))
-          fi
-          echo "PACKAGE_NUMBER=${PACKAGE_NUMBER}" >> $GITHUB_ENV
-          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${PACKAGE_NUMBER}"
+          echo "PACKAGE_NUMBER=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
+          IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/frontend_ci:V-${PACKAGE_NUMBER}"
           echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
       
       - name: Docker Setup
