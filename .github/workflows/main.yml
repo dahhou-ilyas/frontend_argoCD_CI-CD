@@ -58,7 +58,7 @@ jobs:
         run: |
           commit_sha=$COMMIT_SHA
           image_tag="${{ secrets.DOCKER_USERNAME }}/frontend_ci:${commit_sha}"
-          
+    
           docker build -t $image_tag .
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker push $image_tag
