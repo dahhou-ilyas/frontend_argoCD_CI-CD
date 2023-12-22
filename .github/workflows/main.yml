@@ -31,7 +31,7 @@ jobs:
           ls -l dist
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v2
         with:
           name: dist
           path: dist
@@ -47,25 +47,25 @@ jobs:
         else
           echo "PACKAGE_NUMBER=$((PACKAGE_NUMBER + 1))" >> $GITHUB_ENV
         fi
+        echo "IMAGE_TAG=${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${PACKAGE_NUMBER}" >> $GITHUB_ENV
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Download Artifacts
-        uses: actions/download-artifact@master
+        uses: actions/download-artifact@v2
         with:
           name: dist
           path: dist
 
       - name: Docker Setup
         run: |
-          package_number=$PACKAGE_NUMBER
-          image_tag="${{ secrets.DOCKER_USERNAME }}/frontend_ci:V${package_number}"
-    
+          image_tag="${IMAGE_TAG}"
           docker build -t $image_tag .
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker push $image_tag
-          
+
+
   deploy:
     needs: package
     runs-on: ubuntu-latest
