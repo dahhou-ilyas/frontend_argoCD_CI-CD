@@ -73,7 +73,7 @@ jobs:
         run: echo "${GITHUB_SHA::4}"
       - name: Update image version in YAML
         run: |
-          sed -i 's|image: dahhouilyas/frontend_ci:.*|image: ${{ secrets.DOCKER_USERNAME }}/frontend_ci:V-${GITHUB_SHA::4}|' dev/frontend.yaml
+          sed -i 's|image: dahhouilyas/frontend_ci:.*|image: ${{ secrets.DOCKER_USERNAME }}/frontend_ci:V-${{ GITHUB_SHA::4 }}|' dev/frontend.yaml
 
       - name: Commit and push changes
         run: |
