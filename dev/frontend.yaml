@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: dahhouilyas/frontend_ci:V-33c8
+        image: dahhouilyas/frontend_ci:V-${GITHUB_SHA::4}
         ports:
         - containerPort: 80
           name: http-port
