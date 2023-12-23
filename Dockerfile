@@ -5,5 +5,5 @@ COPY dist/* /usr/share/nginx/html
 
 EXPOSE 80
 
-# Command to start 
+# Command to start ngnix
 CMD ["nginx", "-g", "daemon off;"]

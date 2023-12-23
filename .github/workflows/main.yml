@@ -77,7 +77,7 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git config --global user.email "actions@github.com"
+          git config --global user.email "dahhou.ilyas@gmail.com"
           git config --global user.name "GitHub Actions"
           git add dev/frontend.yaml
           git commit -m "Update image version in Kubernetes YAML [skip ci]"
