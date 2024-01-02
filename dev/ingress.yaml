@@ -10,7 +10,7 @@ metadata:
 spec:
   rules:
   
-    - host: dahhou-ilyas.com
+    - host: ilyas.com
       http:
         paths:
           - path: /
