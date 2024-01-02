@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: dahhouilyas/frontend_ci:V-bdda
+        image: dahhouilyas/frontend_ci:V-c091
         ports:
         - containerPort: 80
           name: http-port
